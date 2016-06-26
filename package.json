@@ -1,0 +1,33 @@
+{
+  "name": "rxjs_siritori",
+  "version": "1.0.0",
+  "description": "しりとり",
+  "main": "index.js",
+  "scripts": {
+    "watch": "watchify src/index.js --extension=js -o 'exorcist dist/app.js.map > dist/app.js' -d -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syunk38/rxjs_siritori.git"
+  },
+  "author": "SID",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/syunk38/rxjs_siritori/issues"
+  },
+  "homepage": "https://github.com/syunk38/rxjs_siritori#readme",
+  "devDependencies": {
+    "babelify": "~6.3.0",
+    "browserify": "~11.2.0",
+    "exorcist": "^0.4.0",
+    "jquery": "^3.0.0",
+    "rx": "^4.0.7",
+    "watchify": "~3.4.0"
+  },
+  "browserify": {
+    "transform": [
+      "babelify"
+    ],
+    "debug": "bundle/bundle.js.map"
+  }
+}
