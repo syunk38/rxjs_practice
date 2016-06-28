@@ -1,26 +1,27 @@
-const clickEvent = require('./clickEvent');
 const Rx = require ('rx');
 const $ = require('jquery');
 
 $(() => {
-  clickEvent(Rx, $);
-  const requestStream = Rx.Observable.just('https://api.github.com/users');
-  let responseStream;
-  requestStream.subscribe(requestUrl => {
-    responseStream = Rx.Observable.create(observer => {
-      $.getJSON(requestUrl)
-        .done(response => { observer.onNext(response); })
-        .fail((jqXHR, status, error) => { observer.onError(error); })
-        .always(() => { observer.onCompconsted(); });
+  const refresh = document.querySelector('#btn');
+  const refreshBtnStream = Rx.Observable.fromEvent(refresh, 'click');
+
+  const requestStream = refreshBtnStream
+    .startWith('start click')
+    .do(x => {console.log(x)})
+    .map(event => { return `https://api.github.com/users?since=${event.x + event.y}`})
+
+
+  const responseStream = requestStream
+    .flatMap(requestUrl =>{
+      return Rx.Observable
+        .fromPromise($.getJSON(requestUrl))
+        .flatMap(responses => {
+          return Rx.Observable.from(responses);
+        })
     });
+
+  responseStream.subscribe(data => {
+    $('ul').append(`<li><img src="${data.avatar_url}" height="150" width="150"/></li>`);
+    $('ul').append(`<li>${data.login}</li>`);
   });
-
-  const responseMetaStream = requestStream
-    .map(requestUrl =>{
-      return Rx.Observable.fromPromise($.getJSON(requestUrl));
-    });
-
-  responseStream.subscribe((response => {
-    console.log(response);
-  }));
 });
