@@ -40,8 +40,11 @@ $(() => {
       $('ul li:first').remove();
     }
     else{
-      $('ul').append(`<li><img src="${suggestion.avatar_url}" height="150" width="150"/></li>`);
-      // $('ul').append(`<li>${suggestion.login}</li>`);
+      const $li = $('<li></li>')
+      $li.append(`<img src="${suggestion.avatar_url}" height="150" width="150"/>`);
+      $li.append(`<div>${suggestion.login}</div>`);
+      $li.append(`<a href="javascript:void(0)" class="click1">x</a>`);
+      $('ul').append($li);
     }
   });
 
@@ -50,8 +53,11 @@ $(() => {
       $('ul li:nth-child(2)').remove();
     }
     else{
-      $('ul').append(`<li><img src="${suggestion.avatar_url}" height="150" width="150"/></li>`);
-      // $('ul').append(`<li>${suggestion.login}</li>`);
+      const $li = $('<li></li>')
+      $li.append(`<img src="${suggestion.avatar_url}" height="150" width="150"/>`);
+      $li.append(`<div>${suggestion.login}</div>`);
+      $li.append(`<a href="javascript:void(0)" class="click2">x</a>`);
+      $('ul').append($li);
     }
   });
 
@@ -60,8 +66,11 @@ $(() => {
       $('ul li:last').remove();
     }
     else{
-      $('ul').append(`<li><img src="${suggestion.avatar_url}" height="150" width="150"/></li>`);
-      // $('ul').append(`<li>${suggestion.login}</li>`);
+      const $li = $('<li></li>')
+      $li.append(`<img src="${suggestion.avatar_url}" height="150" width="150"/>`);
+      $li.append(`<div>${suggestion.login}</div>`);
+      $li.append(`<a href="javascript:void(0)" class="click3">x</a>`);
+      $('ul').append($li);
     }
   });
 });
