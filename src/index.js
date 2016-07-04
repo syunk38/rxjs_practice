@@ -11,8 +11,11 @@ $(() => {
 
   const responseStream = requestStream
     .flatMap(requestUrl =>{
+      const beforeSend = xhr => {
+        xhr.setRequestHeader('Authorization', 'Basic ' + btoa('username:password'));
+      }
       return Rx.Observable
-        .fromPromise($.ajax({url:requestUrl}));
+        .fromPromise($.ajax({ url:requestUrl, beforeSend:beforeSend }));
     });
 
   const suggestion1Stream = responseStream
@@ -36,14 +39,16 @@ $(() => {
     .merge(refreshBtnStream.map(() => { return null }))
     .startWith(null);
 
-  const close1Stream = suggestion1Stream.concat(Rx.Observable.fromEventPattern(
-    function add (h) {
-      $('.close1').bind('click', h);
-    },
-    function remove (h) {
-      $('.close1').unbind('click', h);
-    }
-  ));
+  const close1Stream = suggestion1Stream
+    .flatMap( x => {
+      return Rx.Observable.fromEventPattern(
+        h => {
+          $('.close1').bind('click', h);
+        },
+        h => {
+          $('.close1').unbind('click', h);
+        });
+      });
 
   close1Stream.subscribe( x => {
     console.log(x);
