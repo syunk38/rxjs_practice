@@ -7,7 +7,7 @@ $(() => {
 
   const requestStream = refreshBtnStream
     .startWith('start click')
-    .map(event => { return `https://api.github.com/users?since=${Math.floor(Math.random()*500)}`})
+    .map(event => { return `https://api.github.com/users?since=${Math.floor(Math.random()*500)}`});
 
   const responseStream = requestStream
     .flatMap(requestUrl =>{
@@ -36,15 +36,20 @@ $(() => {
     .merge(refreshBtnStream.map(() => { return null }))
     .startWith(null);
 
-  const close1Stream = suggestion1Stream
-    .map(suggestion => { return suggestion });
+  const close1Stream = suggestion1Stream.concat(Rx.Observable.fromEventPattern(
+    function add (h) {
+      $('.close1').bind('click', h);
+    },
+    function remove (h) {
+      $('.close1').unbind('click', h);
+    }
+  ));
 
-  close1Stream.subscribe(suggestion => {
-    console.log(suggestion);
+  close1Stream.subscribe( x => {
+    console.log(x);
+    console.log($('.close1'));
   });
 
-  // const close1Button = document.querySelector('.close1');
-  // const close1ClickStream = Rx.Observable.fromEvent(close1Button, 'click');
   suggestion1Stream.subscribe(suggestion => {
     if (suggestion === null){
       $('ul li:first').remove();
@@ -55,12 +60,6 @@ $(() => {
       $li.append(`<div>${suggestion.login}</div>`);
       $li.append(`<a href="javascript:void(0)" class="close1">x</a>`);
       $('ul').append($li);
-
-      const close1Button = document.querySelector('.close1');
-      const close1ClickStream = Rx.Observable.fromEvent(close1Button, 'click');
-      close1ClickStream.subscribe( event => {
-        console.log(event);
-      });
     }
   });
 
