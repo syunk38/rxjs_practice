@@ -12,7 +12,7 @@ $(() => {
   const responseStream = requestStream
     .flatMap(requestUrl =>{
       return Rx.Observable
-        .fromPromise($.getJSON(requestUrl))
+        .fromPromise($.ajax({url:requestUrl}));
     });
 
   const suggestion1Stream = responseStream
@@ -37,8 +37,11 @@ $(() => {
     .startWith(null);
 
   const close1Stream = suggestion1Stream
-    .map(suggestion => { return suggestion })
-    .do(x => { console.log(x) });
+    .map(suggestion => { return suggestion });
+
+  close1Stream.subscribe(suggestion => {
+    console.log(suggestion);
+  });
 
   // const close1Button = document.querySelector('.close1');
   // const close1ClickStream = Rx.Observable.fromEvent(close1Button, 'click');
