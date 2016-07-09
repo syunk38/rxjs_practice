@@ -17,17 +17,19 @@
   },
   "homepage": "https://github.com/syunk38/rxjs_siritori#readme",
   "devDependencies": {
-    "babelify": "~6.3.0",
     "browserify": "~11.2.0",
+    "watchify": "~3.4.0",
+    "babelify": "~6.3.0",
     "exorcist": "^0.4.0",
     "jquery": "^3.0.0",
-    "rx": "^4.0.7",
-    "watchify": "~3.4.0"
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "rx": "^4.0.7"
   },
   "browserify": {
     "transform": [
       "babelify"
     ],
-    "debug": "bundle/bundle.js.map"
+    "debug": "dist/bundle.js.map"
   }
 }
